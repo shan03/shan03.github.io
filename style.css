@@ -16,7 +16,7 @@ a {
   text-decoration: none;
 }
 a:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 /* =============================
@@ -316,6 +316,24 @@ html { scroll-padding-top: 70px; }
   }
   .timeline-item.right::before {
     left: -28px;
+}
+/* Make hover-info visible when active on mobile */
+.timeline-item .hover-info {
+  display: none;
+  margin-top: 10px;
+  font-size: 0.9em;
+  color: #2563eb;
+  font-weight: bold;
+}
+
+/* On hover for desktop */
+.timeline-item:hover .hover-info {
+  display: block;
+}
+
+/* Active class for mobile tap */
+.timeline-item.active .hover-info {
+  display: block;
 }
 }
 
