@@ -344,3 +344,75 @@ a {
 html {
   scroll-padding-top: 70px; /* Adjust this value based on navbar height */
 }
+
+/* Responsive Enhancements */
+@media (max-width: 768px) {
+  /* Navbar */
+  .navbar {
+    flex-wrap: wrap;
+    padding: 10px;
+  }
+  .nav-links {
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+  }
+  .nav-links li {
+    margin: 12px 0;
+  }
+  .navbar .right-buttons {
+    margin-top: 10px;
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* Sections */
+  section {
+    margin: 15px 10px;
+    padding: 15px;
+  }
+  h2 {
+    font-size: 1.3em;
+  }
+
+  /* Timeline compact view */
+  .timeline::after {
+    left: 8px; /* Move line to the left */
+  }
+  .timeline-item {
+    width: 100%;
+    padding: 15px 20px;
+    margin-left: 25px; /* space from vertical line */
+  }
+  .timeline-item.left,
+  .timeline-item.right {
+    left: 0;
+  }
+  .timeline-item::before {
+    left: -32px; /* align dot with line */
+  }
+  .timeline-item.left::before {
+  right: -12px;
+}
+.timeline-item.right::before {
+  left: -30px;
+}
+}
+
+/* Ultra-small screens */
+@media (max-width: 480px) {
+  header {
+    padding: 40px 15px;
+  }
+  header h1 {
+    font-size: 1.4em;
+  }
+  header p {
+    font-size: 0.9em;
+  }
+  .resume-btn {
+    padding: 8px 15px;
+    font-size: 0.9em;
+  }
+}
