@@ -166,10 +166,15 @@ darkToggle.addEventListener('click', () => {
 
 // Timeline animation on scroll
 const timelineItems = document.querySelectorAll('.timeline-item');
+const timeline = document.querySelector('.timeline');
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if(entry.isIntersecting){
       entry.target.classList.add('show');
+      // when the first item becomes visible, animate the center line
+      if(timeline && !timeline.classList.contains('line-animate')){
+        timeline.classList.add('line-animate');
+      }
     }
   });
 }, { threshold: 0.1 });

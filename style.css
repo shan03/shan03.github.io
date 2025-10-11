@@ -176,6 +176,10 @@ h2 {
   bottom: 0;
   left: 50%;
   margin-left: -2px;
+  /* start collapsed and grow when timeline gets .line-animate */
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: transform 0.8s cubic-bezier(.2,.9,.2,1);
 }
 .timeline-item {
   padding: 20px 40px;
@@ -210,6 +214,63 @@ h2 {
 }
 .timeline-item.left::before { right: -14px; }
 .timeline-item.right::before { left: -14px; }
+
+/* ===== Timeline entrance animations ===== */
+/* hidden initial state */
+.timeline-item {
+  opacity: 0;
+}
+
+/* make the timeline circles pop in */
+.timeline-item::before {
+  transform: scale(0.6);
+  transition: transform 0.45s cubic-bezier(.2,.9,.2,1), background-color 0.3s;
+}
+
+/* Keyframes for sliding in from left/right */
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-36px) translateY(16px); }
+  to   { opacity: 1; transform: translateX(0) translateY(0); }
+}
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(36px) translateY(16px); }
+  to   { opacity: 1; transform: translateX(0) translateY(0); }
+}
+
+/* apply animations when observer toggles .show */
+.timeline-item.show.left .content {
+  animation: slideInLeft 0.62s cubic-bezier(.2,.9,.2,1) both;
+}
+.timeline-item.show.right .content {
+  animation: slideInRight 0.62s cubic-bezier(.2,.9,.2,1) both;
+}
+.timeline-item.show {
+  opacity: 1;
+}
+.timeline-item.show::before {
+  transform: scale(1);
+}
+
+/* stagger effect using nth-child for nicer entrance */
+.timeline-item.show:nth-child(odd) .content { animation-duration: 0.64s; }
+.timeline-item.show:nth-child(even) .content { animation-duration: 0.72s; }
+
+/* animate the central line when timeline receives .line-animate */
+.timeline.line-animate::after {
+  transform: scaleY(1);
+}
+
+/* Accessibility: respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .timeline::after,
+  .timeline-item .content,
+  .timeline-item::before {
+    transition: none !important;
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
 .tech {
   display: inline-block;
   margin-top: 10px;
@@ -346,6 +407,18 @@ html { scroll-padding-top: 70px; }
   .timeline-item:focus,
   .timeline-item:hover {
     background-color: #f0f0f0;
+  }
+
+  /* Mobile: force single-column entrance animation (slide from left) */
+  .timeline-item {
+    opacity: 0;
+  }
+  .timeline-item.show { opacity: 1; }
+  .timeline-item.show .content {
+    animation: slideInLeft 0.6s cubic-bezier(.2,.9,.2,1) both;
+  }
+  .timeline.line-animate::after {
+    transform: scaleY(1);
   }
 }
 
