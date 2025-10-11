@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shanmugasundaram Mariyan | Portfolio</title>
+<title>Shan's Portfolio</title>
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
@@ -35,7 +35,7 @@
 <!-- Header -->
 <header id="summary">
   <h1><i class="fa-solid fa-user-tie"></i> Shanmugasundaram Mariyan</h1>
-  <p>Senior Software Engineer | .NET | Angular | AWS</p>
+  <p>Senior Software Engineer | .NET | Angular | AWS </p>
   <p class="links">
     <a href="mailto:tamil4243@gmail.com"><i class="fa-solid fa-envelope"></i> Email</a> | 
     <a href="tel:+918870204044"><i class="fa-solid fa-phone"></i> Call</a> | 
@@ -69,7 +69,7 @@
       <span class="tech">.NET Core | Angular | Web API | Kendo UI</span>
     </div>
   </div>
-
+  
   <div class="timeline-item right">
     <div class="content">
       <h3>🚀 OnePhoenixAPI</h3>
@@ -121,8 +121,10 @@
   <!-- Education -->
   <section id="education">
     <h2><i class="fa-solid fa-graduation-cap"></i> Education</h2>
-    <p><strong>MCA</strong>, Sri Ramakrishna Engineering College, 2015 – CGPA 7.9</p>
-    <p><strong>BCA</strong>, NGP Arts & Science College, 2013 – CGPA 7.0</p>
+    <ul>
+    <li><strong>MCA</strong>, Sri Ramakrishna Engineering College, 2015 – CGPA 7.9</li>
+    <li><strong>BCA</strong>, NGP Arts & Science College, 2013 – CGPA 7.0</li>
+    </ul>
   </section>
 
   <!-- Contact -->
@@ -139,35 +141,47 @@
 
 <script>
   // Mobile Menu Toggle
-  const toggle = document.querySelector('.menu-toggle');
-  const navLinks = document.querySelector('.nav-links');
-  toggle.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
-  });
+  // Mobile menu toggle
+const toggle = document.querySelector('.menu-toggle');
+const navLinks = document.querySelector('.nav-links');
+toggle.addEventListener('click', () => navLinks.classList.toggle('active'));
 
-  // Dark Mode Toggle + System Preference
-  const darkToggle = document.getElementById('darkModeToggle');
-
-  // Load saved preference OR system preference
-  if (
-    localStorage.getItem('theme') === 'dark' ||
-    (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)
-  ) {
-    document.body.classList.add('dark-mode');
+// Dark mode toggle
+const darkToggle = document.getElementById('darkModeToggle');
+if (localStorage.getItem('theme') === 'dark' || 
+    (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+  document.body.classList.add('dark-mode');
+  darkToggle.innerHTML = '<i class="fa-solid fa-sun"></i>';
+}
+darkToggle.addEventListener('click', () => {
+  document.body.classList.toggle('dark-mode');
+  if(document.body.classList.contains('dark-mode')) {
+    localStorage.setItem('theme','dark');
     darkToggle.innerHTML = '<i class="fa-solid fa-sun"></i>';
+  } else {
+    localStorage.setItem('theme','light');
+    darkToggle.innerHTML = '<i class="fa-solid fa-moon"></i>';
   }
+});
 
-  // Toggle on click
-  darkToggle.addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-    if (document.body.classList.contains('dark-mode')) {
-      localStorage.setItem('theme', 'dark');
-      darkToggle.innerHTML = '<i class="fa-solid fa-sun"></i>';
-    } else {
-      localStorage.setItem('theme', 'light');
-      darkToggle.innerHTML = '<i class="fa-solid fa-moon"></i>';
+// Timeline animation on scroll
+const timelineItems = document.querySelectorAll('.timeline-item');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting){
+      entry.target.classList.add('show');
     }
   });
+}, { threshold: 0.1 });
+timelineItems.forEach(item => observer.observe(item));
+
+// Mobile tap for hover-info
+timelineItems.forEach(item => {
+  item.addEventListener('click', () => {
+    timelineItems.forEach(i => i !== item && i.classList.remove('active'));
+    item.classList.toggle('active');
+  });
+});
 </script>
 </body>
 </html>
