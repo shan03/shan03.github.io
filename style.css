@@ -24,6 +24,31 @@ body {
 .resume-btn:hover {
   background: #007acc;
 }
+
+/* Added tooltip styling for the download button */
+.download-btn {
+  position: relative;
+  background: none;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+    color: #fff; /* Default color */
+    margin-left: 15px;
+}
+.download-btn:hover::after {
+  content: "Resume";
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.8em;
+  white-space: nowrap;
+  z-index: 10;
+}
   
   /* Navbar */
   .navbar {
@@ -40,6 +65,8 @@ body {
   .navbar .logo {
     font-size: 1.3em;
     font-weight: bold;
+    color: white; /* Default color */
+    text-decoration: none;
   }
   .nav-links {
     display: flex;
@@ -66,8 +93,14 @@ body {
     border: none;
     font-size: 1.2em;
     cursor: pointer;
-    color: #58a6ff;
+    color: #fff; /* Default color */
     margin-left: 15px;
+  }
+  .navbar .right-buttons {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Add spacing between buttons */
+    margin-left: auto; /* Push buttons to the right */
   }
   
   /* Sections */
@@ -262,6 +295,27 @@ body.dark-mode .timeline-item::before {
   background-color: #58a6ff;
   border: 3px solid #1f2937;
 }
+
+/* Added text-decoration: none; to contact links */
+#contact a {
+  text-decoration: none;
+}
+#contact a:hover {
+  text-decoration: underline;
+}
+
+/* Added text-decoration: none; to certification links */
+#certifications a {
+  text-decoration: none;
+}
+#certifications a:hover {
+  text-decoration: underline;
+}
+
+/* Updated all anchor tags to have the specified color */
+a {
+  color: #58a6ff;
+}
   
   /* Responsive */
   @media (max-width: 768px) {
@@ -285,3 +339,8 @@ body.dark-mode .timeline-item::before {
       display: block;
     }
   }
+
+  /* Added scroll-padding to ensure headings are not hidden behind the navbar */
+html {
+  scroll-padding-top: 70px; /* Adjust this value based on navbar height */
+}
