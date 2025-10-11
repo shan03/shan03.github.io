@@ -263,6 +263,14 @@ body.dark-mode .timeline-item::before {
 html { scroll-padding-top: 70px; }
 
 @media (max-width: 768px) {
+  nav {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: #fff; /* Ensure visibility */
+}
+
   /* Navbar */
   .navbar {
     padding: 10px 15px;
@@ -335,6 +343,10 @@ html { scroll-padding-top: 70px; }
 .timeline-item.active .hover-info {
   display: block;
 }
+  .timeline-item:focus,
+  .timeline-item:hover {
+    background-color: #f0f0f0;
+  }
 }
 
 @media (max-width: 480px) {
