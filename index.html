@@ -15,6 +15,7 @@
   <meta property="og:type" content="website">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/counterapi/dist/counter.browser.min.js"></script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -61,7 +62,7 @@
   <div class="menu-toggle"><i class="fa-solid fa-bars"> </i> </div>
   <!-- Added a wrapper class for aligning the download and dark/light buttons -->
   <div class="right-buttons">
-    <a href="Shanmugasundaram_Mariyan.pdf" class="download-btn">
+    <a href="Shanmugasundaram_Mariyan.pdf" class="download-btn" id="downloadBtn">
       <i class="fa-solid fa-download"></i>
     </a>
     <button class="dark-mode-toggle" id="darkModeToggle">
@@ -175,10 +176,15 @@
   </section>
 
 <footer>
-  <p>© 2025 Shanmugasundaram Mariyan</p>
+ <footer>
+  © <span id="current-year"></span> Shanmugasundaram Mariyan |
+  <i class="fa-solid fa-eye"></i> <span id="view-count">0</span> |
+  <i class="fa-solid fa-download"></i> <span id="download-count">0</span>
+</footer>
 </footer>
 
 <script>
+    document.getElementById('current-year').textContent = new Date().getFullYear();
   // Mobile Menu Toggle
   // Mobile menu toggle
 const toggle = document.querySelector('.menu-toggle');
@@ -226,6 +232,53 @@ timelineItems.forEach(item => {
     item.classList.toggle('active');
   });
 });
+  const dwnButton = document.getElementById('downloadBtn');
+  const counter = new Counter({ workspace: 'shan03' });
+
+ document.addEventListener('DOMContentLoaded', function() {
+    // Get initial count
+    counter.get('shan03-downloads')
+      .then(result => {
+        if (result && result.data !== undefined) {
+           document.getElementById('download-count').textContent = result.data.up_count;
+        } else {
+          document.getElementById('download-count').textContent = '0';
+        }
+      })
+      .catch(err => {
+        console.error(err)
+        document.getElementById('download-count').textContent = '0';
+      });
+
+    // Add click handler
+    dwnButton.addEventListener('click', function() {
+      counter.up('shan03-downloads')
+        .then(result => {
+          if (result && result.data !== undefined) {
+          document.getElementById('download-count').textContent = result.data.up_count;}
+          else {
+            document.getElementById('download-count').textContent = '0';
+          }
+        })
+        .catch(err => {
+          console.error(err)
+            document.getElementById('download-count').textContent = '0';
+        });
+    });
+    // Increment the view count when the page loads
+    counter.up('shan03-views')
+      .then(result => {
+        if (result && result.data !== undefined) {
+          document.getElementById('view-count').textContent = result.data.up_count;
+        } else {
+          document.getElementById('view-count').textContent = '0';
+        }
+      })
+      .catch(error => {
+        console.error('Error tracking page view:', error);
+        document.getElementById('view-count').textContent = '0';
+      });
+  });
 </script>
 </body>
 </html>
