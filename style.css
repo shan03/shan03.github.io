@@ -428,3 +428,27 @@ html { scroll-padding-top: 70px; }
   header p { font-size: 0.9em; }
   .resume-btn { padding: 8px 15px; font-size: 0.9em; }
 }
+
+#scrollTopBtn {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 99;
+  width: 50px;              /* Equal width */
+  height: 50px;             /* Equal height */
+  font-size: 20px;
+  border: none;
+  outline: none;
+  background-color: #58a6ff;
+  color: white;
+  cursor: pointer;
+  border-radius: 50%;       /* Perfect circle */
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+#scrollTopBtn:hover {
+  background-color: #2575fc;
+  transform: scale(1.1);
+}
