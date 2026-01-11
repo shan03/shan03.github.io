@@ -25,17 +25,42 @@ darkToggle.addEventListener('click', () => {
 // Timeline animation on scroll
 const timelineItems = document.querySelectorAll('.timeline-item');
 const timeline = document.querySelector('.timeline');
+let timelineAnimated = false;
+
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if(entry.isIntersecting){
-      entry.target.classList.add('show');
-      // when the first item becomes visible, animate the center line
-      if(timeline && !timeline.classList.contains('line-animate')){
+      // Animate the center line first when timeline enters viewport
+      if(timeline && !timelineAnimated){
         timeline.classList.add('line-animate');
+        timelineAnimated = true;
+        // Add slight delay before animating items for smoother sequence
+        setTimeout(() => {
+          entry.target.classList.add('show');
+        }, 200);
+      } else {
+        entry.target.classList.add('show');
       }
     }
   });
-}, { threshold: 0.1 });
+}, { 
+  threshold: 0.15,
+  rootMargin: '0px 0px -50px 0px'
+});
+
+// Observe timeline container first, then individual items
+if(timeline) {
+  const timelineObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting && !timelineAnimated){
+        timeline.classList.add('line-animate');
+        timelineAnimated = true;
+      }
+    });
+  }, { threshold: 0.1 });
+  timelineObserver.observe(timeline);
+}
+
 timelineItems.forEach(item => observer.observe(item));
 
 // Mobile tap for hover-info
@@ -108,4 +133,30 @@ timelineItems.forEach(item => {
       top: 0,
       behavior: "smooth"
     });
+  });
+
+  // Menu toggle hide/show on scroll
+  let lastScrollTop = 0;
+  const menuToggle = document.querySelector('.menu-toggle');
+  
+  window.addEventListener("scroll", () => {
+    const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    // Only apply on mobile (when menu-toggle is visible)
+    if (window.innerWidth <= 768 && menuToggle) {
+      if (currentScrollTop > lastScrollTop && currentScrollTop > 100) {
+        // Scrolling down - hide menu toggle
+        menuToggle.classList.add('menu-toggle-hidden');
+      } else if (currentScrollTop < lastScrollTop) {
+        // Scrolling up - show menu toggle
+        menuToggle.classList.remove('menu-toggle-hidden');
+      }
+      
+      // Always show at the top of the page
+      if (currentScrollTop <= 50) {
+        menuToggle.classList.remove('menu-toggle-hidden');
+      }
+    }
+    
+    lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
   });
