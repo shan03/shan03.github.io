@@ -79,6 +79,10 @@ a:hover {
   position: sticky;
   top: 0;
   z-index: 1000;
+  transition: transform 0.3s ease-in-out;
+}
+.navbar.navbar-hidden {
+  transform: translateY(-100%);
 }
 .navbar .logo {
   font-size: 1.3em;
@@ -99,13 +103,13 @@ a:hover {
   display: none;
   font-size: 1.5em;
   cursor: pointer;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  transform: translateY(0);
+  transition: opacity 0.3s ease, visibility 0.3s ease;
   opacity: 1;
+  visibility: visible;
 }
 .menu-toggle.menu-toggle-hidden {
-  transform: translateY(-100%);
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
 }
 .navbar .right-buttons {

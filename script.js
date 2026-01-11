@@ -4,6 +4,14 @@ const toggle = document.querySelector('.menu-toggle');
 const navLinks = document.querySelector('.nav-links');
 toggle.addEventListener('click', () => navLinks.classList.toggle('active'));
 
+// Close nav-links dropdown when a nav-link is clicked
+const navLinkItems = document.querySelectorAll('.nav-links a');
+navLinkItems.forEach(link => {
+  link.addEventListener('click', () => {
+    navLinks.classList.remove('active');
+  });
+});
+
 // Dark mode toggle
 const darkToggle = document.getElementById('darkModeToggle');
 if (localStorage.getItem('theme') === 'dark' || 
@@ -137,26 +145,78 @@ timelineItems.forEach(item => {
 
   // Menu toggle hide/show on scroll
   let lastScrollTop = 0;
+  let ticking = false;
   const menuToggle = document.querySelector('.menu-toggle');
   
-  window.addEventListener("scroll", () => {
+  function isMenuToggleVisible() {
+    if (!menuToggle) return false;
+    const style = window.getComputedStyle(menuToggle);
+    return style.display !== 'none' && window.innerWidth <= 768;
+  }
+  
+  function handleMenuToggleScroll() {
+    if (!isMenuToggleVisible()) {
+      ticking = false;
+      return;
+    }
+    
     const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
     
-    // Only apply on mobile (when menu-toggle is visible)
-    if (window.innerWidth <= 768 && menuToggle) {
-      if (currentScrollTop > lastScrollTop && currentScrollTop > 100) {
-        // Scrolling down - hide menu toggle
-        menuToggle.classList.add('menu-toggle-hidden');
-      } else if (currentScrollTop < lastScrollTop) {
-        // Scrolling up - show menu toggle
-        menuToggle.classList.remove('menu-toggle-hidden');
-      }
-      
-      // Always show at the top of the page
-      if (currentScrollTop <= 50) {
-        menuToggle.classList.remove('menu-toggle-hidden');
-      }
+    if (currentScrollTop > lastScrollTop && currentScrollTop > 100) {
+      // Scrolling down - hide menu toggle
+      menuToggle.classList.add('menu-toggle-hidden');
+    } else if (currentScrollTop < lastScrollTop || currentScrollTop <= 50) {
+      // Scrolling up or at top - show menu toggle
+      menuToggle.classList.remove('menu-toggle-hidden');
     }
     
     lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
+    ticking = false;
+  }
+  
+  window.addEventListener("scroll", () => {
+    if (!ticking) {
+      window.requestAnimationFrame(handleMenuToggleScroll);
+      ticking = true;
+    }
+  }, { passive: true });
+  
+  // Reset menu toggle visibility on window resize
+  window.addEventListener("resize", () => {
+    if (menuToggle && !isMenuToggleVisible()) {
+      menuToggle.classList.remove('menu-toggle-hidden');
+    }
   });
+
+  // Navbar hide/show on scroll
+  let navbarLastScrollTop = 0;
+  let navbarTicking = false;
+  const navbar = document.querySelector('.navbar');
+  const SCROLL_THRESHOLD = 100;
+  
+  function handleNavbarScroll() {
+    if (!navbar) {
+      navbarTicking = false;
+      return;
+    }
+    
+    const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    if (currentScrollTop > navbarLastScrollTop && currentScrollTop > SCROLL_THRESHOLD) {
+      // Scrolling down - hide navbar
+      navbar.classList.add('navbar-hidden');
+    } else if (currentScrollTop < navbarLastScrollTop || currentScrollTop <= SCROLL_THRESHOLD) {
+      // Scrolling up or at top - show navbar
+      navbar.classList.remove('navbar-hidden');
+    }
+    
+    navbarLastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
+    navbarTicking = false;
+  }
+  
+  window.addEventListener("scroll", () => {
+    if (!navbarTicking) {
+      window.requestAnimationFrame(handleNavbarScroll);
+      navbarTicking = true;
+    }
+  }, { passive: true });
